@@ -1,0 +1,1154 @@
+{
+    "passName": "v12",
+    "maxEvents": 100,
+    "maxTriesPerEvent": 1,
+    "run": -1,
+    "inputFiles": [],
+    "outputFiles": [
+        "simoutput.root"
+    ],
+    "sequence": [
+        {
+            "instanceName": "photo-nuclear",
+            "className": "simcore::Simulator",
+            "generators": [
+                {
+                    "class_name": "simcore::ParticleGun",
+                    "instance_name": "single_4gev_e_upstream_tagger",
+                    "time": 0.0,
+                    "verbosity": 0,
+                    "particle": "e-",
+                    "energy": 4.0,
+                    "position": [
+                        -27.926,
+                        0,
+                        -700
+                    ],
+                    "direction": [
+                        0.07845909572784494,
+                        0,
+                        0.996917333733128
+                    ]
+                }
+            ],
+            "detector": "/Users/user/ldmx-sw/install/data/detectors/ldmx-det-v12/detector.gdml",
+            "description": "ECal photo-nuclear, xsec bias 450",
+            "scoringPlanes": "/Users/user/ldmx-sw/install/data/detectors/ldmx-det-v12/scoring_planes.gdml",
+            "beamSpotSmear": [
+                20.0,
+                80.0,
+                0
+            ],
+            "time_shift_primaries": true,
+            "enableHitContribs": true,
+            "compressHitContribs": true,
+            "preInitCommands": [],
+            "postInitCommands": [],
+            "actions": [
+                {
+                    "class_name": "biasing::TaggerVetoFilter",
+                    "instance_name": "tagger_veto_filter",
+                    "threshold": 3800.0
+                },
+                {
+                    "class_name": "biasing::TargetBremFilter",
+                    "instance_name": "target_brem_filter",
+                    "recoil_max_p_threshold": 1500.0,
+                    "brem_min_energy_threshold": 2500.0,
+                    "kill_recoil_track": false
+                },
+                {
+                    "class_name": "biasing::EcalProcessFilter",
+                    "instance_name": "ecal_photonNuclear_filter",
+                    "process": "photonNuclear"
+                },
+                {
+                    "class_name": "biasing::utility::TrackProcessFilter",
+                    "instance_name": "photonNuclear_track_filter",
+                    "process": "photonNuclear"
+                }
+            ],
+            "biasing_operators": [
+                {
+                    "class_name": "simcore::biasoperators::PhotoNuclear",
+                    "instance_name": "old_ecal_bias_pn",
+                    "volume": "old_ecal",
+                    "factor": 450.0,
+                    "threshold": 2500.0,
+                    "down_bias_conv": true,
+                    "only_children_of_primary": true
+                }
+            ],
+            "logging_prefix": "",
+            "rootPrimaryGenUseSeed": false,
+            "validate_detector": false,
+            "verbosity": 0,
+            "dark_brem": {
+                "ap_mass": 0.0,
+                "only_one_per_event": false,
+                "enable": false,
+                "cache_xsec": true,
+                "model": {
+                    "name": "UNDEFINED"
+                }
+            },
+            "runNumber": 0,
+            "randomSeeds": [
+                1,
+                2
+            ]
+        },
+        {
+            "instanceName": "ecalDigis",
+            "className": "ecal::EcalDigiProducer",
+            "hgcroc": {
+                "rateUpSlope": -0.345,
+                "timeUpSlope": 70.6547,
+                "rateDnSlope": 0.140068,
+                "timeDnSlope": 87.7649,
+                "timePeak": 77.732,
+                "clockCycle": 25.0,
+                "timingJitter": 0.25,
+                "noiseRMS": 0.009612000000000002,
+                "nADCs": 10,
+                "iSOI": 2,
+                "noise": true
+            },
+            "MeV": 2.2797692307692308,
+            "avgReadoutThreshold": 0.828125,
+            "avgPedestal": 0.78125,
+            "zero_suppression": true,
+            "inputCollName": "EcalSimHits",
+            "inputPassName": "",
+            "digiCollName": "EcalDigis"
+        },
+        {
+            "instanceName": "ecalRecon",
+            "className": "ecal::EcalRecProducer",
+            "mip_si_energy": 0.13,
+            "charge_per_mip": 5.9274000000000004,
+            "clock_cycle": 25.0,
+            "digiCollName": "EcalDigis",
+            "digiPassName": "",
+            "simHitCollName": "EcalSimHits",
+            "simHitPassName": "",
+            "recHitCollName": "EcalRecHits",
+            "secondOrderEnergyCorrection": 0.9982530571499876,
+            "layerWeights": [
+                1.675,
+                2.724,
+                4.398,
+                6.039,
+                7.696,
+                9.077,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                9.63,
+                13.497,
+                17.364,
+                17.364,
+                17.364,
+                17.364,
+                17.364,
+                17.364,
+                17.364,
+                17.364,
+                17.364,
+                8.99
+            ]
+        },
+        {
+            "instanceName": "hcalDigis",
+            "className": "hcal::HcalDigiProducer",
+            "hgcroc": {
+                "rateUpSlope": -0.1141,
+                "timeUpSlope": -9.897,
+                "rateDnSlope": 0.0279,
+                "timeDnSlope": 45.037,
+                "timePeak": 12.698,
+                "clockCycle": 25.0,
+                "timingJitter": 0.25,
+                "noiseRMS": 0.1,
+                "nADCs": 10,
+                "iSOI": 3,
+                "noise": true
+            },
+            "MeV": 72.96137339055794,
+            "attenuationLength": 5.0,
+            "avgReadoutThreshold": 4.0,
+            "avgGain": 1.2,
+            "avgPedestal": 1.0,
+            "inputCollName": "HcalSimHits",
+            "inputPassName": "",
+            "digiCollName": "HcalDigis"
+        },
+        {
+            "instanceName": "hcalRecon",
+            "className": "hcal::HcalRecProducer",
+            "voltage_per_mip": 340.0,
+            "mip_energy": 4.66,
+            "clock_cycle": 25.0,
+            "pe_per_mip": 68.0,
+            "attenuationLength": 5.0,
+            "digiCollName": "HcalDigis",
+            "digiPassName": "",
+            "simHitCollName": "HcalSimHits",
+            "simHitPassName": "",
+            "recHitCollName": "HcalRecHits",
+            "rateUpSlope": -0.1141,
+            "timeUpSlope": -9.897,
+            "rateDnSlope": 0.0279,
+            "timeDnSlope": 45.037,
+            "timePeak": 12.698,
+            "nADCs": 10,
+            "avgToaThreshold": 1.6,
+            "avgGain": 1.2,
+            "avgPedestal": 1.0
+        },
+        {
+            "instanceName": "hcalVeto",
+            "className": "hcal::HcalVetoProcessor",
+            "pe_threshold": 5.0,
+            "max_time": 50.0,
+            "max_depth": 4000.0,
+            "back_min_pe": 1.0
+        }
+    ],
+    "keep": [],
+    "skimDefaultIsKeep": true,
+    "skimRules": [],
+    "logFrequency": 10,
+    "termLogLevel": 2,
+    "fileLogLevel": 0,
+    "logFileName": "",
+    "compressionSetting": 9,
+    "histogramFile": "",
+    "conditionsGlobalTag": "Default",
+    "conditionsObjectProviders": [
+        {
+            "objectName": "RandomNumberSeedService",
+            "className": "framework::RandomNumberSeedService",
+            "tagName": "Default",
+            "seedMode": "run",
+            "seed": -1
+        },
+        {
+            "objectName": "EcalGeometryProvider",
+            "className": "ecal::EcalGeometryProvider",
+            "tagName": "Default",
+            "EcalHexReadout": {
+                "v13": {
+                    "detectors_valid": [
+                        "ldmx-det-v13",
+                        "ldmx-det-v13[.].*"
+                    ],
+                    "gap": 1.5,
+                    "moduleMinR": 85.0,
+                    "layerZPositions": [
+                        7.85,
+                        13.3,
+                        26.4,
+                        33.5,
+                        47.95,
+                        56.55,
+                        72.25,
+                        81.35,
+                        97.05,
+                        106.15,
+                        121.85,
+                        130.95,
+                        146.65,
+                        155.75,
+                        171.45,
+                        180.55,
+                        196.25,
+                        205.35,
+                        221.05,
+                        230.15,
+                        245.85,
+                        254.95,
+                        270.65,
+                        279.75,
+                        298.95,
+                        311.55,
+                        330.75,
+                        343.35,
+                        362.55,
+                        375.15,
+                        394.35,
+                        406.95,
+                        426.15,
+                        438.75
+                    ],
+                    "ecalFrontZ": 240.5,
+                    "nCellRHeight": 35.0,
+                    "verbose": 0,
+                    "cornersSideUp": true
+                },
+                "v12": {
+                    "detectors_valid": [
+                        "ldmx-det-v12",
+                        "ldmx-det-v12[.].*"
+                    ],
+                    "gap": 1.5,
+                    "moduleMinR": 85.0,
+                    "layerZPositions": [
+                        7.85,
+                        13.3,
+                        26.4,
+                        33.5,
+                        47.95,
+                        56.55,
+                        72.25,
+                        81.35,
+                        97.05,
+                        106.15,
+                        121.85,
+                        130.95,
+                        146.65,
+                        155.75,
+                        171.45,
+                        180.55,
+                        196.25,
+                        205.35,
+                        221.05,
+                        230.15,
+                        245.85,
+                        254.95,
+                        270.65,
+                        279.75,
+                        298.95,
+                        311.55,
+                        330.75,
+                        343.35,
+                        362.55,
+                        375.15,
+                        394.35,
+                        406.95,
+                        426.15,
+                        438.75
+                    ],
+                    "ecalFrontZ": 240.5,
+                    "nCellRHeight": 35.3,
+                    "verbose": 0,
+                    "cornersSideUp": false
+                },
+                "v9": {
+                    "detectors_valid": [
+                        "ldmx-det-v9",
+                        "ldmx-det-v10",
+                        "ldmx-det-v11"
+                    ],
+                    "gap": 0.0,
+                    "moduleMinR": 85.0,
+                    "layerZPositions": [
+                        4.55,
+                        7.3,
+                        13.8,
+                        18.2,
+                        26.05,
+                        31.95,
+                        41.05,
+                        47.45,
+                        56.55,
+                        62.95,
+                        72.05,
+                        78.45,
+                        87.55,
+                        93.95,
+                        103.05,
+                        109.45,
+                        118.55,
+                        124.95,
+                        134.05,
+                        140.45,
+                        149.55,
+                        155.95,
+                        165.05,
+                        171.45,
+                        184.05,
+                        193.95,
+                        206.55,
+                        216.45,
+                        229.05,
+                        238.95,
+                        251.55,
+                        261.45,
+                        274.05,
+                        283.95
+                    ],
+                    "ecalFrontZ": 200.0,
+                    "nCellRHeight": 35.3,
+                    "verbose": 0,
+                    "cornersSideUp": false
+                }
+            }
+        },
+        {
+            "objectName": "EcalTriggerGeometry",
+            "className": "ecal::EcalTriggerGeometryProvider",
+            "tagName": "Default",
+            "EcalHexReadout": {
+                "v13": {
+                    "detectors_valid": [
+                        "ldmx-det-v13",
+                        "ldmx-det-v13[.].*"
+                    ],
+                    "gap": 1.5,
+                    "moduleMinR": 85.0,
+                    "layerZPositions": [
+                        7.85,
+                        13.3,
+                        26.4,
+                        33.5,
+                        47.95,
+                        56.55,
+                        72.25,
+                        81.35,
+                        97.05,
+                        106.15,
+                        121.85,
+                        130.95,
+                        146.65,
+                        155.75,
+                        171.45,
+                        180.55,
+                        196.25,
+                        205.35,
+                        221.05,
+                        230.15,
+                        245.85,
+                        254.95,
+                        270.65,
+                        279.75,
+                        298.95,
+                        311.55,
+                        330.75,
+                        343.35,
+                        362.55,
+                        375.15,
+                        394.35,
+                        406.95,
+                        426.15,
+                        438.75
+                    ],
+                    "ecalFrontZ": 240.5,
+                    "nCellRHeight": 35.0,
+                    "verbose": 0,
+                    "cornersSideUp": true
+                },
+                "v12": {
+                    "detectors_valid": [
+                        "ldmx-det-v12",
+                        "ldmx-det-v12[.].*"
+                    ],
+                    "gap": 1.5,
+                    "moduleMinR": 85.0,
+                    "layerZPositions": [
+                        7.85,
+                        13.3,
+                        26.4,
+                        33.5,
+                        47.95,
+                        56.55,
+                        72.25,
+                        81.35,
+                        97.05,
+                        106.15,
+                        121.85,
+                        130.95,
+                        146.65,
+                        155.75,
+                        171.45,
+                        180.55,
+                        196.25,
+                        205.35,
+                        221.05,
+                        230.15,
+                        245.85,
+                        254.95,
+                        270.65,
+                        279.75,
+                        298.95,
+                        311.55,
+                        330.75,
+                        343.35,
+                        362.55,
+                        375.15,
+                        394.35,
+                        406.95,
+                        426.15,
+                        438.75
+                    ],
+                    "ecalFrontZ": 240.5,
+                    "nCellRHeight": 35.3,
+                    "verbose": 0,
+                    "cornersSideUp": false
+                },
+                "v9": {
+                    "detectors_valid": [
+                        "ldmx-det-v9",
+                        "ldmx-det-v10",
+                        "ldmx-det-v11"
+                    ],
+                    "gap": 0.0,
+                    "moduleMinR": 85.0,
+                    "layerZPositions": [
+                        4.55,
+                        7.3,
+                        13.8,
+                        18.2,
+                        26.05,
+                        31.95,
+                        41.05,
+                        47.45,
+                        56.55,
+                        62.95,
+                        72.05,
+                        78.45,
+                        87.55,
+                        93.95,
+                        103.05,
+                        109.45,
+                        118.55,
+                        124.95,
+                        134.05,
+                        140.45,
+                        149.55,
+                        155.95,
+                        165.05,
+                        171.45,
+                        184.05,
+                        193.95,
+                        206.55,
+                        216.45,
+                        229.05,
+                        238.95,
+                        251.55,
+                        261.45,
+                        274.05,
+                        283.95
+                    ],
+                    "ecalFrontZ": 200.0,
+                    "nCellRHeight": 35.3,
+                    "verbose": 0,
+                    "cornersSideUp": false
+                }
+            }
+        },
+        {
+            "objectName": "EcalTrigPrimDigiConditions",
+            "className": "conditions::SimpleCSVTableProvider",
+            "tagName": "Default",
+            "dataType": "int",
+            "columns": [
+                "ADC_PEDESTAL",
+                "ADC_THRESHOLD",
+                "TOT_PEDESTAL",
+                "TOT_THRESHOLD",
+                "TOT_GAIN"
+            ],
+            "entries": [
+                {
+                    "URL": "python:",
+                    "firstRun": -1,
+                    "lastRun": -1,
+                    "runType": "any",
+                    "values": [
+                        50,
+                        5,
+                        50,
+                        100,
+                        8
+                    ]
+                }
+            ]
+        },
+        {
+            "objectName": "EcalReconConditions",
+            "className": "conditions::SimpleCSVTableProvider",
+            "tagName": "Default",
+            "dataType": "double",
+            "columns": [
+                "ADC_PEDESTAL",
+                "ADC_GAIN",
+                "TOT_PEDESTAL",
+                "TOT_GAIN"
+            ],
+            "entries": [
+                {
+                    "URL": "python:",
+                    "firstRun": -1,
+                    "lastRun": -1,
+                    "runType": "any",
+                    "values": [
+                        50.0,
+                        0.3125,
+                        50.0,
+                        2.5
+                    ]
+                }
+            ]
+        },
+        {
+            "objectName": "EcalHgcrocConditions",
+            "className": "conditions::SimpleCSVTableProvider",
+            "tagName": "Default",
+            "dataType": "double",
+            "columns": [
+                "PEDESTAL",
+                "MEAS_TIME",
+                "PAD_CAPACITANCE",
+                "TOT_MAX",
+                "DRAIN_RATE",
+                "GAIN",
+                "READOUT_THRESHOLD",
+                "TOA_THRESHOLD",
+                "TOT_THRESHOLD"
+            ],
+            "entries": [
+                {
+                    "URL": "python:",
+                    "firstRun": -1,
+                    "lastRun": -1,
+                    "runType": "any",
+                    "values": [
+                        50.0,
+                        0.0,
+                        20.0,
+                        200.0,
+                        51.2,
+                        0.015625,
+                        53.0,
+                        2.2631,
+                        15.59975
+                    ]
+                }
+            ]
+        },
+        {
+            "objectName": "HcalGeometryProvider",
+            "className": "hcal::HcalGeometryProvider",
+            "tagName": "Default",
+            "HcalGeometry": {
+                "v12": {
+                    "detectors_valid": [
+                        "ldmx-det-v12",
+                        "ldmx-det-v12[.].*",
+                        "ldmx-det-v9",
+                        "ldmx-det-v10",
+                        "ldmx-det-v11"
+                    ],
+                    "ThicknessScint": 20.0,
+                    "WidthScint": 50.0,
+                    "ZeroLayer": [
+                        820.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0
+                    ],
+                    "ZeroStrip": [
+                        1550.0,
+                        220.0,
+                        220.0,
+                        220.0,
+                        220.0
+                    ],
+                    "LayerThickness": [
+                        49.0,
+                        44.0,
+                        44.0,
+                        44.0,
+                        44.0
+                    ],
+                    "NumLayers": [
+                        100,
+                        28,
+                        28,
+                        26,
+                        26
+                    ],
+                    "NumStrips": [
+                        62,
+                        12,
+                        12,
+                        12,
+                        12
+                    ],
+                    "HalfTotalWidth": [
+                        1550.0,
+                        972.0,
+                        972.0,
+                        916.0,
+                        916.0
+                    ],
+                    "EcalDx": 800.0,
+                    "EcalDy": 600.0,
+                    "NumSections": 5,
+                    "verbose": 0
+                },
+                "v13": {
+                    "detectors_valid": [
+                        "ldmx-det-v13",
+                        "ldmx-det-v12",
+                        "ldmx-det-v12[.].*",
+                        "ldmx-det-v9",
+                        "ldmx-det-v10",
+                        "ldmx-det-v11"
+                    ],
+                    "ThicknessScint": 20.0,
+                    "WidthScint": 50.0,
+                    "ZeroLayer": [
+                        820.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0
+                    ],
+                    "ZeroStrip": [
+                        1550.0,
+                        220.0,
+                        220.0,
+                        220.0,
+                        220.0
+                    ],
+                    "LayerThickness": [
+                        49.0,
+                        44.0,
+                        44.0,
+                        44.0,
+                        44.0
+                    ],
+                    "NumLayers": [
+                        100,
+                        28,
+                        28,
+                        26,
+                        26
+                    ],
+                    "NumStrips": [
+                        62,
+                        12,
+                        12,
+                        12,
+                        12
+                    ],
+                    "HalfTotalWidth": [
+                        1550.0,
+                        972.0,
+                        972.0,
+                        916.0,
+                        916.0
+                    ],
+                    "EcalDx": 800.0,
+                    "EcalDy": 600.0,
+                    "NumSections": 5,
+                    "verbose": 0
+                },
+                "prototype": {
+                    "detectors_valid": [
+                        "ldmx-hcal-prototype-v1.0",
+                        "ldmx-hcal-prototype-v1.0[.].*"
+                    ],
+                    "ThicknessScint": 20.0,
+                    "WidthScint": 50.0,
+                    "ZeroLayer": [
+                        -438.5
+                    ],
+                    "ZeroStrip": [
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0
+                    ],
+                    "LayerThickness": [
+                        49.0
+                    ],
+                    "NumLayers": [
+                        19
+                    ],
+                    "NumStrips": [
+                        8,
+                        8,
+                        8,
+                        8,
+                        8,
+                        8,
+                        8,
+                        8,
+                        8,
+                        12,
+                        12,
+                        12,
+                        12,
+                        12,
+                        12,
+                        12,
+                        12,
+                        12,
+                        12
+                    ],
+                    "HalfTotalWidth": [
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0
+                    ],
+                    "EcalDx": 0.0,
+                    "EcalDy": 0.0,
+                    "NumSections": 1,
+                    "verbose": 0
+                }
+            }
+        },
+        {
+            "objectName": "HcalTriggerGeometry",
+            "className": "hcal::HcalTriggerGeometryProvider",
+            "tagName": "Default",
+            "HcalGeometry": {
+                "v12": {
+                    "detectors_valid": [
+                        "ldmx-det-v12",
+                        "ldmx-det-v12[.].*",
+                        "ldmx-det-v9",
+                        "ldmx-det-v10",
+                        "ldmx-det-v11"
+                    ],
+                    "ThicknessScint": 20.0,
+                    "WidthScint": 50.0,
+                    "ZeroLayer": [
+                        820.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0
+                    ],
+                    "ZeroStrip": [
+                        1550.0,
+                        220.0,
+                        220.0,
+                        220.0,
+                        220.0
+                    ],
+                    "LayerThickness": [
+                        49.0,
+                        44.0,
+                        44.0,
+                        44.0,
+                        44.0
+                    ],
+                    "NumLayers": [
+                        100,
+                        28,
+                        28,
+                        26,
+                        26
+                    ],
+                    "NumStrips": [
+                        62,
+                        12,
+                        12,
+                        12,
+                        12
+                    ],
+                    "HalfTotalWidth": [
+                        1550.0,
+                        972.0,
+                        972.0,
+                        916.0,
+                        916.0
+                    ],
+                    "EcalDx": 800.0,
+                    "EcalDy": 600.0,
+                    "NumSections": 5,
+                    "verbose": 0
+                },
+                "v13": {
+                    "detectors_valid": [
+                        "ldmx-det-v13",
+                        "ldmx-det-v12",
+                        "ldmx-det-v12[.].*",
+                        "ldmx-det-v9",
+                        "ldmx-det-v10",
+                        "ldmx-det-v11"
+                    ],
+                    "ThicknessScint": 20.0,
+                    "WidthScint": 50.0,
+                    "ZeroLayer": [
+                        820.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0
+                    ],
+                    "ZeroStrip": [
+                        1550.0,
+                        220.0,
+                        220.0,
+                        220.0,
+                        220.0
+                    ],
+                    "LayerThickness": [
+                        49.0,
+                        44.0,
+                        44.0,
+                        44.0,
+                        44.0
+                    ],
+                    "NumLayers": [
+                        100,
+                        28,
+                        28,
+                        26,
+                        26
+                    ],
+                    "NumStrips": [
+                        62,
+                        12,
+                        12,
+                        12,
+                        12
+                    ],
+                    "HalfTotalWidth": [
+                        1550.0,
+                        972.0,
+                        972.0,
+                        916.0,
+                        916.0
+                    ],
+                    "EcalDx": 800.0,
+                    "EcalDy": 600.0,
+                    "NumSections": 5,
+                    "verbose": 0
+                },
+                "prototype": {
+                    "detectors_valid": [
+                        "ldmx-hcal-prototype-v1.0",
+                        "ldmx-hcal-prototype-v1.0[.].*"
+                    ],
+                    "ThicknessScint": 20.0,
+                    "WidthScint": 50.0,
+                    "ZeroLayer": [
+                        -438.5
+                    ],
+                    "ZeroStrip": [
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0
+                    ],
+                    "LayerThickness": [
+                        49.0
+                    ],
+                    "NumLayers": [
+                        19
+                    ],
+                    "NumStrips": [
+                        8,
+                        8,
+                        8,
+                        8,
+                        8,
+                        8,
+                        8,
+                        8,
+                        8,
+                        12,
+                        12,
+                        12,
+                        12,
+                        12,
+                        12,
+                        12,
+                        12,
+                        12,
+                        12
+                    ],
+                    "HalfTotalWidth": [
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        200.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0,
+                        300.0
+                    ],
+                    "EcalDx": 0.0,
+                    "EcalDy": 0.0,
+                    "NumSections": 1,
+                    "verbose": 0
+                }
+            }
+        },
+        {
+            "objectName": "HcalTrigPrimDigiConditions",
+            "className": "conditions::SimpleCSVTableProvider",
+            "tagName": "Default",
+            "dataType": "int",
+            "columns": [
+                "ADC_PEDESTAL",
+                "ADC_THRESHOLD",
+                "TOT_PEDESTAL",
+                "TOT_THRESHOLD",
+                "TOT_GAIN"
+            ],
+            "entries": [
+                {
+                    "URL": "python:",
+                    "firstRun": -1,
+                    "lastRun": -1,
+                    "runType": "any",
+                    "values": [
+                        1,
+                        5,
+                        1,
+                        10000,
+                        2.5
+                    ]
+                }
+            ]
+        },
+        {
+            "objectName": "HcalReconConditions",
+            "className": "conditions::SimpleCSVTableProvider",
+            "tagName": "Default",
+            "dataType": "double",
+            "columns": [
+                "ADC_PEDESTAL",
+                "ADC_GAIN",
+                "TOT_PEDESTAL",
+                "TOT_GAIN"
+            ],
+            "entries": [
+                {
+                    "URL": "python:",
+                    "firstRun": -1,
+                    "lastRun": -1,
+                    "runType": "any",
+                    "values": [
+                        1.0,
+                        1.2,
+                        1,
+                        2.5
+                    ]
+                }
+            ]
+        },
+        {
+            "objectName": "HcalHgcrocConditions",
+            "className": "conditions::SimpleCSVTableProvider",
+            "tagName": "Default",
+            "dataType": "double",
+            "columns": [
+                "PEDESTAL",
+                "MEAS_TIME",
+                "PAD_CAPACITANCE",
+                "TOT_MAX",
+                "DRAIN_RATE",
+                "GAIN",
+                "READOUT_THRESHOLD",
+                "TOA_THRESHOLD",
+                "TOT_THRESHOLD"
+            ],
+            "entries": [
+                {
+                    "URL": "python:",
+                    "firstRun": -1,
+                    "lastRun": -1,
+                    "runType": "any",
+                    "values": [
+                        1.0,
+                        12.5,
+                        20.0,
+                        200.0,
+                        51.2,
+                        1.2,
+                        5.0,
+                        6.2,
+                        10000.0
+                    ]
+                }
+            ]
+        }
+    ],
+    "tree_name": "LDMX_Events",
+    "randomNumberSeedService": {
+        "objectName": "RandomNumberSeedService",
+        "className": "framework::RandomNumberSeedService",
+        "tagName": "Default",
+        "seedMode": "run",
+        "seed": -1
+    }
+}
