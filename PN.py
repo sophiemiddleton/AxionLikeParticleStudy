@@ -27,11 +27,11 @@ from LDMX.SimCore import simcfg
 
 from LDMX.Hcal import digi as hcaldigi
 from LDMX.DetDescr.HcalGeometry import HcalGeometry
-from LDMX.DetDescr.EcalHexReadout import EcalHexReadoutGeometry
-from LDMX.Ecal import EcalGeometry
+#from LDMX.DetDescr.EcalHexReadout import EcalHexReadoutGeometry
+#from LDMX.Ecal import EcalGeometry
 from LDMX.Hcal import HcalGeometry
 from LDMX.Hcal import hcal_hardcoded_conditions
-from LDMX.Ecal import ecal_hardcoded_conditions
+#from LDMX.Ecal import ecal_hardcoded_conditions
 
 
 #
@@ -82,21 +82,21 @@ findableTrack = ldmxcfg.Producer("findable", "ldmx::FindableTrackProcessor", "Ev
 trackerVeto = ldmxcfg.Producer("trackerVeto", "ldmx::TrackerVetoProcessor", "EventProc")
 """
 
-ecalDigi   =digi.EcalDigiProducer()
-ecalrec=digi.EcalRecProducer()
+#ecalDigi   =digi.EcalDigiProducer()
+#ecalrec=digi.EcalRecProducer()
 #ecalVeto   =vetos.EcalVetoProcessor()
 hcalDigis  =hcaldigi.HcalDigiProducer()
 hcalrec = hcaldigi.HcalRecProducer()
 hcalVeto   =hcal.HcalVetoProcessor()
-
+hcalcluster = hcal.HcalClusterProducer()
 """
 tsDigisTag  =TrigScintDigiProducer.tagger()
 tsDigisUp  =TrigScintDigiProducer.up()
 tsDigisDown  =TrigScintDigiProducer.down()
 """
 
-p.sequence=[ sim, ecalDigi, ecalrec, hcalDigis, hcalrec, hcalVeto]#, tsDigisTag, tsDigisUp, tsDigisDown] #, trackerHitKiller, simpleTrigger, findableTrack, trackerVeto ]
+p.sequence=[ sim, hcalDigis, hcalrec, hcalVeto, hcalcluster]#, tsDigisTag, tsDigisUp, tsDigisDown] #, trackerHitKiller, simpleTrigger, findableTrack, trackerVeto ]
 p.outputFiles=["simoutput.root"]
 
-p.maxEvents = 200000
+p.maxEvents = 20000
 p.logFrequency = 10

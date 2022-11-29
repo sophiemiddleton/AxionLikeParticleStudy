@@ -36,18 +36,18 @@ sim.randomSeeds = [ 1,2 ]
 sim.beamSpotSmear = [ 20., 80., 0 ]
 
 # Enable the LHE generator
-sim.generators.append(generators.lhe( "Signal Generator", ("/Users/user/ldmx-sw/ALPSamples/primakoff_samples/primakoff_events/m_100/unweighted_events.lhe" )))#primakoff_samples/primakoff_events/m_10/unweighted_events.lhe" )))
-#/Users/user/ldmx-sw/ALPSamples/photon_fusion_events/m_10_decayed_1/unweighted_events.lhe
+sim.generators.append(generators.lhe( "Signal Generator", ("/Users/user/ldmx-sw/ALPSamples/primakoff_samples/primakoff_events/m_100/unweighted_events.lhe" )))
 hcalDigis = digi.HcalDigiProducer()#ecalDigis = ecaldigi.EcalDigiProducer()
 hcalrec = digi.HcalRecProducer()
+hcalcluster = hcal.HcalClusterProducer()
 #ecalrec = ecaldigi.EcalRecProducer()
 
 geom = HcalGeometry.HcalGeometryProvider.getInstance()
-p.sequence=[ sim, hcalDigis, hcalrec]
+p.sequence=[ sim, hcalDigis, hcalrec, hcalcluster]
 
 p.outputFiles = [ "ALP_m100.root"]
 
-p.maxEvents = 8418
+p.maxEvents = 500
 p.logFrequency = 10
 p.lheFilePath = ("/Users/user/ldmx-sw/ALPSamples/primakoff_samples/primakoff_events/m_100/unweighted_events.lhe" )
 p.pause()

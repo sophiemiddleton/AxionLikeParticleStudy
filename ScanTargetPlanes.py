@@ -97,6 +97,8 @@ def main(options,args) :
     n, bins, patches = ax.hist(sc.energy,
             bins=100, range=(0,4000), alpha=0.5, histtype='step', label="Target")
     plt.yscale('log')
+    ax.set_xlabel('Energy [MeV]')
+    ax.set_ylabel('Entries per bin')
     fig.savefig("energy.pdf")
     fig, ax = plt.subplots(1,1)
     n, bins, patches = ax.hist(sc.mom_x,
