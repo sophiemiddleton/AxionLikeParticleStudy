@@ -22,13 +22,19 @@ void TMVAClassificationApplication( TString myMethodList = "" )
 {
   TFile *f = new TFile("output.root","RECREATE");
   TTree *outTree = new TTree("outTree","outTree");
-  Float_t vNHits, vZLength, vZAverage, vZWidth, vXYWidth, vBDT;
+  Float_t vNHits, vZLength, vZAverage, vZWidth, vXYWidth, vDeltaZ, vEav, vBDT, vEav_cut_1, vEav_cut_2, vEav_cut_3, vEDensity;
   outTree->Branch("vBDT", &vBDT, "vBDT/F");
   outTree->Branch("vNHits", &vNHits, "vNHits/F");
   outTree->Branch("vZLength", &vZLength, "vZLength/F");
   outTree->Branch("vZAverage", &vZAverage, "vZAverage/F");
   outTree->Branch("vZWidth", &vZWidth, "vZWidth/F");
-  outTree->Branch("vXYWidth", &vXYWidth, "vXYWidth/F");
+  //outTree->Branch("vXYWidth", &vXYWidth, "vXYWidth/F");
+  outTree->Branch("vDeltaZ", &vDeltaZ, "vDeltaZ/F");
+  outTree->Branch("vEav", &vEav, "vEav/F");
+  outTree->Branch("vEav_cut_1", &vEav_cut_1, "vEav_cut_1/F");
+  outTree->Branch("vEav_cut_2", &vEav_cut_2, "vEav_cut_2/F");
+  outTree->Branch("vEav_cut_3", &vEav_cut_3, "vEav_cut_3/F");
+  outTree->Branch("vEDensity", &vEDensity, "vEDensity/F");
   //---------------------------------------------------------------
   // This loads the library
   TMVA::Tools::Instance();
@@ -133,12 +139,19 @@ void TMVAClassificationApplication( TString myMethodList = "" )
 
   // Create a set of variables and declare them to the reader
   // - the variable names MUST corresponds in name and type to those given in the weight file(s) used
-  Float_t NHits, ZLength, ZAverage, ZWidth, XYWidth;
+  Float_t NHits, ZLength, ZAverage, ZWidth, XYWidth, DeltaZ, Eav,  Eav_cut_1,  Eav_cut_2,  Eav_cut_3, EDensity;
   reader->AddVariable( "NHits", &NHits );
-  reader->AddVariable( "ZLength",&ZLength );
+  //reader->AddVariable( "ZLength",&ZLength );
   reader->AddVariable( "ZAverage", &ZAverage );
   reader->AddVariable( "ZWidth", &ZWidth );
-  reader->AddVariable( "XYWidth", &XYWidth );
+  //reader->AddVariable( "XYWidth", &XYWidth );
+//reader->AddVariable( "DeltaZ", &DeltaZ );
+  reader->AddVariable( "Eav", &Eav );
+  //reader->AddVariable( "Eav_cut_1", &Eav_cut_1 );
+//  reader->AddVariable( "Eav_cut_2", &Eav_cut_2 );
+  //reader->AddVariable( "Eav_cut_3", &Eav_cut_3 );
+  reader->AddVariable( "EDensity", &EDensity );
+
 
 
   // Book the MVA methods
@@ -249,7 +262,8 @@ void TMVAClassificationApplication( TString myMethodList = "" )
   // we'll later on use only the "signal" events for the test in this example.
   //
   TFile *input(0);
-  TString fname = "/Users/user/ldmx-sw/ALPSamples/FilesForBDT/Signal_PhotonFusion.root"; //TODO is this meant to be the data
+  TString fname = "/Users/user/ldmx-sw/ALPSamples/Gun_BDT/ALPStudy_photon_m1000.root"; //ALPStudy_primakoff_cuts_m150.root";
+  std::cout<<" running on "<<fname<<std::endl;
   if (!gSystem->AccessPathName( fname )) {
      input = TFile::Open( fname ); // check if file in local directory exists
   }
@@ -278,8 +292,13 @@ void TMVAClassificationApplication( TString myMethodList = "" )
   theTree->SetBranchAddress("ZLength", &ZLength);
   theTree->SetBranchAddress("ZAverage", &ZAverage);
   theTree->SetBranchAddress("ZWidth", &ZWidth);
-  theTree->SetBranchAddress("XYWidth", &XYWidth);
-
+  //theTree->SetBranchAddress("XYWidth", &XYWidth);
+  theTree->SetBranchAddress("DeltaZ", &DeltaZ);
+  theTree->SetBranchAddress("Eav", &Eav);
+  //theTree->SetBranchAddress("Eav_cut_1", &Eav_cut_1);
+  theTree->SetBranchAddress("Eav_cut_2", &Eav_cut_2);
+  //theTree->SetBranchAddress("Eav_cut_3", &Eav_cut_3);
+  theTree->SetBranchAddress("EDensity", &EDensity);
   // Efficiency calculator for cut method
   Int_t    nSelCutsGA = 0;
   Double_t effS       = 0.7;
@@ -309,7 +328,10 @@ void TMVAClassificationApplication( TString myMethodList = "" )
     vZLength = ZLength;
     vZAverage = ZAverage;
     vZWidth = ZWidth;
-    vXYWidth = XYWidth;
+    //vXYWidth = XYWidth;
+    vDeltaZ = DeltaZ;
+    vEav = Eav;
+
 
     outTree->Fill();
      if (Use["Likelihood"   ])   histLk     ->Fill( reader->EvaluateMVA( "Likelihood method"    ) );
